@@ -1,48 +1,18 @@
 package com.abes.ordermanagement.service;
 
 import com.abes.ordermanagement.entity.Product;
-import com.abes.ordermanagement.repository.ProductRepository;
-
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class ProductService {
+public interface ProductService {
 
-    private final ProductRepository productRepository;
+    List<Product> getAllProducts();
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    Product getProductById(Long id);
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
+    Product createProduct(Product product);
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-    }
+    Product updateProduct(Long id, Product product);
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    public Product updateProduct(Long id, Product product) {
-
-        Product existingProduct = getProductById(id);
-
-        existingProduct.setProductCode(product.getProductCode());
-        existingProduct.setProductName(product.getProductName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setStockQuantity(product.getStockQuantity());
-
-        return productRepository.save(existingProduct);
-    }
-
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-    }
+    void deleteProduct(Long id);
 }
